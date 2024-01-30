@@ -26,7 +26,7 @@ function App() {
     window.navigator.clipboard.writeText(password);
   },[password])
 
-  useEffect(()=>{passgen()},[len,symb,num,setPassword]);
+  useEffect(()=>{passgen()},[len, symb, num, setPassword, passgen]);
 
   return (
     <>
