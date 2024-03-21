@@ -4,5 +4,13 @@ import Container from './container/Container'
 import LogoutBtn from './header/LogoutBtn'
 import Logo from './Logo'
 import RTE from './RTE'
+import Button from './Button'
+import Select from './Select'
+import Input from './Input'
+import Signup from './Signup'
+import Login from './Login'
+import PostCard from './PostCard'
+import PostForm from './post-form/PostForm'
+import AuthLayout from './AuthLayout'
 
-export {Header, Footer, Logo, Container, LogoutBtn, RTE}
+export {Header, Footer, Logo, Container, LogoutBtn, RTE, Signup, Login, PostCard, PostForm, AuthLayout, Button, Select, Input}
