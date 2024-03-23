@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Container } from "../components";
 import appwriteService from '../appwrite/config';
 import parse from 'html-react-parser';
@@ -32,8 +32,12 @@ export default function Post(){
         })
     }
 
+    const editPost = ()=>{
+        navigate(`/edit-post/${post.$id}`)
+    }
+
     return post ? (
-        <div className=" py-8">
+        <div className=" py-8 text-gray-100">
             <Container>
                 <div className=" w-full flex justify-center mb-4 relative border rounded-xl p-2">
                     <img
@@ -43,11 +47,17 @@ export default function Post(){
                     />
 
                     {isAuthor && (
-                        <div className=" absolute right-6 top-6">
-                            <Link to={`/edit-post/${post.$id}`} />
-                            <Button bgColor='bg-green-500' onClick={deletePost}>
-                                Delete
-                            </Button>
+                        <div className="flex flex-col items-end absolute right-6 top-6">
+                            <div className="mb-4">
+                                <Button bgColor='bg-green-500' onClick={editPost}>
+                                    Edit Post
+                                </Button>
+                            </div>
+                            <div>
+                                <Button bgColor='bg-red-500' onClick={deletePost}>
+                                    Delete
+                                </Button>
+                            </div>
                         </div>
                     )}
                 </div>
@@ -57,7 +67,7 @@ export default function Post(){
                     </h1>
                 </div>
                 <div className=" browser-css">
-                    {parse(post.content)}
+                    {parse(`${post.content}`)}
                 </div>
             </Container>
         </div>

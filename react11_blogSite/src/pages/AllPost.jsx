@@ -6,13 +6,29 @@ function AllPost() {
 
     const [posts, setPosts] = useState([])
 
-    useEffect(()=> {},[])
+    useEffect(()=>{
+        appwriteService.getPosts([]).then((posts)=>{
+            if (posts){
+                setPosts(posts.documents)
+            }
+        })
+    },[])
 
-    appwriteService.getPosts([]).then((posts)=> {
-        if (posts){
-            setPosts(posts.documents)
-        }
-    })
+    if (posts.length === 0) {
+        return (
+            <div className="w-full py-8 mt-4 text-center">
+                <Container>
+                    <div className="flex flex-wrap">
+                        <div className="p-2 w-full">
+                            <h1 className=" text-2xl font-bold hover:text-gray-500">
+                                No Post Avaliable
+                            </h1>
+                        </div>
+                    </div>
+                </Container>
+            </div>
+        )
+    }
 
     return (
         <div className='py-8 w-full'>
@@ -20,7 +36,7 @@ function AllPost() {
                 <div className="flex flex-wrap">
                     {posts.map((post)=>(
                         <div className="p-2 w-1/4" key={post.$id}>
-                            <PostCard post={post} />
+                            <PostCard {...post} />
                         </div>
                     ))}
                 </div>

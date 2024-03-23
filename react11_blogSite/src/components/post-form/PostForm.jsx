@@ -16,17 +16,17 @@ export default function PostForm({post}) {
         }
     });
 
-    const navigate = useNavigate();
-    const userData = useSelector(state => state.user.userData);
+    const navigate = useNavigate(); 
+    const userData = useSelector(state => state.auth.userData);
 
     const submit = async (data) =>{
         if (post) {
-            const file = data.image[0] ? appwriteService.uploadFile(data.image[0]):null
-
+            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]):null
+            
             if (file){
-                appwriteService.deleteFile(post.featuredImage)
+                await appwriteService.deleteFile(post.featuredImage)
             }
-
+            
             const dbPost = await appwriteService.updatePost(post.$id,{
                 ...data,
                 featuredImage: file ? file.$id : undefined
@@ -35,8 +35,8 @@ export default function PostForm({post}) {
                 navigate(`/post/${dbPost.$id}`)
             }
         } else {
-            const file = data.image[0] ? appwriteService.uploadFile(data.image[0]):null
-
+            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]):undefined
+            
             if (file){
                 const fileId = file.$id
                 data.featuredImage = fileId
@@ -49,13 +49,14 @@ export default function PostForm({post}) {
                 }
             }
         }
+        console.log(data)
     }
 
     const slugTransform = useCallback((value)=>{
         if (value && typeof value === 'string') {
             return value.trim()
                         .toLowerCase()
-                        .replace(/^[a-zA-Z\d]+/g,'-')
+                        .replace(/ +/g,'-')
         }
         return ''
     },[])
@@ -73,7 +74,7 @@ export default function PostForm({post}) {
     },[watch, slugTransform, setValue])
 
     return (
-        <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
+        <form onSubmit={handleSubmit(submit)} className="flex flex-wrap text-zinc-300">
             <div className="w-2/3 px-2">
                 <Input 
                     label='Title: '
@@ -82,7 +83,7 @@ export default function PostForm({post}) {
                     {...register('title',{required: true})}
                 />
                 <Input
-                    lable='Slug: '
+                    label='Slug: '
                     placeholder='Slug'
                     className='mb-4'
                     {...register('slug',{required: true})}
